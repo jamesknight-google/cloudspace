@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANZ Bank — Gemini Enterprise Agent Demo Guide</title>
+  <style>
+    :root {
+      --anz-navy: #004165;
+      --anz-blue: #007DB8;
+      --anz-light-blue: #E8F4FA;
+      --anz-accent: #00A3E0;
+      --anz-dark: #0A192F;
+      --anz-text: #212529;
+      --anz-muted: #6C757D;
+      --anz-border: #DDE2E5;
+      --anz-card-bg: #FFFFFF;
+      --anz-bg: #F4F7F9;
+      --success-green: #0E8A16;
+      --success-bg: #EAF5EA;
+      --danger-red: #D9381E;
+      --danger-bg: #FDEEEC;
+      --warning-amber: #D9822B;
+      --warning-bg: #FEF7ED;
+      --google-blue: #1A73E8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--anz-bg);
+      color: var(--anz-text);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Navigation */
+    aside.sidebar {
+      width: 290px;
+      background-color: var(--anz-navy);
+      color: #fff;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.15);
+    }
+
+    .sidebar-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--anz-accent);
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .sidebar-subtitle {
+      font-size: 13px;
+      color: #A0C4DE;
+      margin-top: 4px;
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 16px 0;
+      flex-grow: 1;
+    }
+
+    .nav-item {
+      margin: 2px 0;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      color: #D1E4F2;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      border-left: 4px solid var(--anz-accent);
+    }
+
+    .nav-num {
+      width: 22px;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 12px;
+      color: #A0C4DE;
+    }
+
+    /* Main Content */
+    main.main-content {
+      margin-left: 290px;
+      flex-grow: 1;
+      padding: 40px;
+      max-width: 1200px;
+    }
+
+    /* Header Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, var(--anz-navy) 0%, var(--anz-blue) 100%);
+      color: #fff;
+      padding: 32px;
+      border-radius: 12px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 20px rgba(0, 65, 101, 0.15);
+      position: relative;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: #E2EFF7;
+      max-width: 850px;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--anz-card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--anz-border);
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--anz-light-blue);
+    }
+
+    .section-title {
+      font-size: 22px;
+      color: var(--anz-navy);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title-badge {
+      background: var(--anz-light-blue);
+      color: var(--anz-blue);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Comparison Grid */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .agent-card {
+      background: #FAFCFE;
+      border: 1px solid var(--anz-border);
+      border-radius: 10px;
+      padding: 24px;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .agent-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 125, 184, 0.1);
+    }
+
+    .agent-card.chat-agent {
+      border-top: 4px solid var(--anz-blue);
+    }
+
+    .agent-card.workflow-agent {
+      border-top: 4px solid #7B1FA2;
+    }
+
+    .agent-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .agent-card.chat-agent .agent-badge {
+      background: var(--anz-light-blue);
+      color: var(--anz-blue);
+    }
+
+    .agent-card.workflow-agent .agent-badge {
+      background: #F3E5F5;
+      color: #7B1FA2;
+    }
+
+    .agent-title {
+      font-size: 18px;
+      color: var(--anz-navy);
+      margin-bottom: 8px;
+    }
+
+    .agent-features {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .agent-features li {
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .agent-features li::before {
+      content: "✓";
+      color: var(--anz-blue);
+      font-weight: bold;
+    }
+
+    /* Code & Prompt Boxes */
+    .prompt-box {
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+      position: relative;
+    }
+
+    .prompt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #475569;
+    }
+
+    .prompt-content {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      font-size: 13px;
+      color: #0F172A;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--anz-blue);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--anz-navy);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--anz-blue);
+      border: 1px solid var(--anz-blue);
+    }
+
+    .btn-outline:hover {
+      background: var(--anz-light-blue);
+    }
+
+    .btn-copy {
+      background: #E2E8F0;
+      color: #334155;
+      font-size: 12px;
+      padding: 4px 10px;
+    }
+
+    .btn-copy:hover {
+      background: #CBD5E1;
+    }
+
+    .btn-copy.copied {
+      background: var(--success-green);
+      color: #fff;
+    }
+
+    /* Workflow Diagram Visual */
+    .workflow-visual {
+      background: #0F172A;
+      color: #F8FAFC;
+      border-radius: 10px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .flow-node {
+      background: #1E293B;
+      border: 1px solid #334155;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .flow-arrow {
+      color: #94A3B8;
+      font-size: 18px;
+    }
+
+    .branch-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed #334155;
+    }
+
+    .branch-card {
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .branch-card.approved {
+      background: rgba(14, 138, 22, 0.15);
+      border: 1px solid var(--success-green);
+    }
+
+    .branch-card.denied {
+      background: rgba(217, 56, 30, 0.15);
+      border: 1px solid var(--danger-red);
+    }
+
+    .branch-card.review {
+      background: rgba(217, 130, 43, 0.15);
+      border: 1px solid var(--warning-amber);
+    }
+
+    /* Script Timeline */
+    .script-timeline {
+      position: relative;
+      padding-left: 28px;
+      margin: 24px 0;
+    }
+
+    .script-timeline::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--anz-border);
+    }
+
+    .script-step {
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    .step-marker {
+      position: absolute;
+      left: -28px;
+      top: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--anz-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 1px var(--anz-blue);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--anz-navy);
+    }
+
+    .step-time {
+      font-size: 12px;
+      color: var(--anz-muted);
+      background: #ECEFF1;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .track-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .track-box {
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 13px;
+    }
+
+    .talk-track {
+      background: #F0F7FA;
+      border-left: 4px solid var(--anz-blue);
+    }
+
+    .action-track {
+      background: #FFF9E6;
+      border-left: 4px solid #F59E0B;
+    }
+
+    .track-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .talk-track .track-label { color: var(--anz-navy); }
+    .action-track .track-label { color: #B45309; }
+
+    /* Tabs Component */
+    .tab-container {
+      margin-top: 20px;
+    }
+
+    .tab-header {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--anz-border);
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 10px 18px;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--anz-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--anz-blue);
+    }
+
+    .tab-btn.active {
+      color: var(--anz-navy);
+      border-bottom-color: var(--anz-blue);
+      background: rgba(0, 125, 184, 0.04);
+      border-radius: 6px 6px 0 0;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .doc-viewer {
+      background: #F8FAFC;
+      border: 1px solid var(--anz-border);
+      border-radius: 8px;
+      padding: 20px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      max-height: 480px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      color: #1E293B;
+    }
+
+    .pill-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      margin-right: 6px;
+    }
+
+    .pill-approved { background: var(--success-bg); color: var(--success-green); border: 1px solid #A3D9A5; }
+    .pill-denied { background: var(--danger-bg); color: var(--danger-red); border: 1px solid #F5B7B1; }
+    .pill-review { background: var(--warning-bg); color: var(--warning-amber); border: 1px solid #FAD7A0; }
+
+    /* Alert Boxes */
+    .alert {
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+      font-size: 14px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .alert-info {
+      background: var(--anz-light-blue);
+      border-left: 4px solid var(--anz-blue);
+      color: var(--anz-navy);
+    }
+
+    .alert-warning {
+      background: var(--warning-bg);
+      border-left: 4px solid var(--warning-amber);
+      color: #78350F;
+    }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .checklist li {
+      padding: 10px 14px;
+      background: #F8FAFC;
+      border: 1px solid var(--anz-border);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .checklist input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--anz-blue);
+    }
+
+    /* Sticky Action Floating Bar */
+    .floating-bar {
+      position: sticky;
+      bottom: 20px;
+      background: var(--anz-dark);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      z-index: 90;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 992px) {
+      aside.sidebar { display: none; }
+      main.main-content { margin-left: 0; padding: 20px; }
+      .comparison-grid, .track-grid, .branch-container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="brand-badge">ANZ & Google Cloud</span>
+      <h1 class="sidebar-title">Gemini Enterprise</h1>
+      <p class="sidebar-subtitle">Contract Evaluation Demo Portal</p>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item"><a href="#overview" class="nav-link active"><span class="nav-num">1</span> Overview & Architecture</a></li>
+      <li class="nav-item"><a href="#prework" class="nav-link"><span class="nav-num">2</span> GE Setup & Pre-Work</a></li>
+      <li class="nav-item"><a href="#chat-demo" class="nav-link"><span class="nav-num">3</span> Demo Act 1: Chat Agent</a></li>
+      <li class="nav-item"><a href="#workflow-demo" class="nav-link"><span class="nav-num">4</span> Demo Act 2: Workflow Agent</a></li>
+      <li class="nav-item"><a href="#synthetic-data" class="nav-link"><span class="nav-num">5</span> Synthetic Data Files</a></li>
+      <li class="nav-item"><a href="#output-artifacts" class="nav-link"><span class="nav-num">6</span> Output Artifacts</a></li>
+      <li class="nav-item"><a href="#faqs" class="nav-link"><span class="nav-num">7</span> Speaker FAQs & Tips</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <strong>Target Client:</strong> ANZ Bank<br>
+      <strong>Regulatory:</strong> APRA CPS 234 / 230<br>
+      <strong>Updated:</strong> 2026 Production Ready
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+
+    <!-- Hero Header -->
+    <div class="hero-banner">
+      <div class="hero-tags">
+        <span class="tag">ANZ Institutional Banking</span>
+        <span class="tag">Gemini Enterprise</span>
+        <span class="tag">Dual-Agent Architecture</span>
+      </div>
+      <h1 class="hero-title">Automated Contract Governance & Compliance Demo</h1>
+      <p class="hero-desc">
+        A complete presenter guide and data kit demonstrating how ANZ leverages Gemini Enterprise for both <strong>conversational contract vetting (Chat Agent)</strong> and <strong>zero-touch autonomous compliance routing (Workflow Agent)</strong> under strict APRA CPS 234 guidelines.
+      </p>
+    </div>
+
+    <!-- Section 1: Overview & Architecture -->
+    <section id="overview" class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-title-badge">Section 1</span>
+          Executive Overview & Dual-Agent Architecture
+        </h2>
+      </div>
+
+      <p style="margin-bottom: 20px; font-size: 15px;">
+        In Institutional Banking, reviewing hundreds of complex market data, trading software, and FinTech vendor contracts against APRA regulatory guidelines creates significant procurement bottlenecks. Gemini Enterprise provides two complementary paradigms to solve this:
+      </p>
+
+      <div class="comparison-grid">
+        <!-- Chat Agent Card -->
+        <div class="agent-card chat-agent">
+          <span class="agent-badge">Agent Type 1</span>
+          <h3 class="agent-title">Conversational Chat Agent</h3>
+          <p style="font-size: 13px; color: var(--anz-muted); margin-bottom: 12px;"><strong>Role:</strong> Sourcing Specialist Co-Pilot</p>
+          <ul class="agent-features">
+            <li><strong>Invocation:</strong> Ad-hoc interactive chat window in Gemini Enterprise.</li>
+            <li><strong>Ingestion:</strong> Upload draft contract PDF/DOCX/TXT directly into chat.</li>
+            <li><strong>Knowledge:</strong> Embedded ANZ Market Data Procurement Guidelines (APRA CPS 234).</li>
+            <li><strong>Output:</strong> Instant conversational verdict (Approved, Denied, Review Needed) with clause-by-clause legal rationale.</li>
+            <li><strong>Best For:</strong> Interactive negotiation, clause queries, and on-the-fly redline checking.</li>
+          </ul>
+        </div>
+
+        <!-- Workflow Agent Card -->
+        <div class="agent-card workflow-agent">
+          <span class="agent-badge">Agent Type 2</span>
+          <h3 class="agent-title">Autonomous Workflow Agent</h3>
+          <p style="font-size: 13px; color: var(--anz-muted); margin-bottom: 12px;"><strong>Role:</strong> End-to-End Enterprise Orchestrator</p>
+          <ul class="agent-features">
+            <li><strong>Invocation:</strong> Event-driven trigger on Google Drive folder drop.</li>
+            <li><strong>Ingestion:</strong> Automatic file pickup from <code>01_Incoming_Contracts/</code>.</li>
+            <li><strong>Logic:</strong> Multi-branch decision engine evaluating 5 regulatory pillars.</li>
+            <li><strong>Output:</strong> Generates formal audit artifacts directly to Google Drive folders:
+              <br>• <code>02_Approved_Contracts/</code> (Approval Memo)
+              <br>• <code>03_Rejected_Contracts/</code> (Rejection Notice)
+              <br>• <code>04_Pending_Human_Review/</code> (Escalation Brief + Review Task)
+            </li>
+            <li><strong>Best For:</strong> High-volume pipeline processing, compliance audit trails, and zero-touch operations.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Visual Workflow Flowchart -->
+      <div class="workflow-visual">
+        <h4 style="color: #38BDF8; font-size: 14px; text-transform: uppercase; margin-bottom: 16px;">System Execution Flow</h4>
+        
+        <div class="flow-step">
+          <div class="flow-node" style="border-color: #38BDF8; color: #38BDF8;">📁 Google Drive Ingestion (01_Incoming_Contracts)</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node" style="border-color: #A855F7; color: #C084FC;">⚡ Gemini Enterprise Workflow Engine</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">📜 Grounded Policy Evaluation (APRA CPS 234/230)</div>
+        </div>
+
+        <div class="branch-container">
+          <div class="branch-card approved">
+            <strong style="color: #4ADE80; font-size: 13px;">Branch 1: Clean Approval</strong>
+            <p style="margin-top: 6px; color: #CBD5E1;">Satisfies all 5 pillars (AU hosting, 99.99% SLA, 2x cap, NSW law). Generates Approval Memo to <code>02_Approved_Contracts</code>.</p>
+          </div>
+          <div class="branch-card denied">
+            <strong style="color: #F87171; font-size: 13px;">Branch 2: Hard Rejection</strong>
+            <p style="margin-top: 6px; color: #CBD5E1;">Breaches hard triggers (US/EU hosting, no audit, 99.0% SLA). Generates Denial Notice to <code>03_Rejected_Contracts</code>.</p>
+          </div>
+          <div class="branch-card review">
+            <strong style="color: #FBBF24; font-size: 13px;">Branch 3: Human-in-the-Loop</strong>
+            <p style="margin-top: 6px; color: #CBD5E1;">Policy variances (Singapore DR, 99.95% SLA, 1x cap). Generates Escalation Brief to <code>04_Pending_Human_Review</code>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: GE Setup & Pre-Work -->
+    <section id="prework" class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-title-badge">Section 2</span>
+          Gemini Enterprise Setup & Pre-Work Guide
+        </h2>
+      </div>
+
+      <div class="alert alert-info">
+        <div>
+          <strong>Pre-Demo Setup Checklist:</strong> Complete these one-time configuration steps before opening the live demo session to ensure smooth execution.
+        </div>
+      </div>
+
+      <ul class="checklist">
+        <li>
+          <input type="checkbox" id="c1" checked>
+          <label for="c1"><strong>Step 1: Google Drive Structure</strong> — Create the 4 demo folders in your Google Drive: <code>01_Incoming_Contracts</code>, <code>02_Approved_Contracts</code>, <code>03_Rejected_Contracts</code>, <code>04_Pending_Human_Review</code>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c2" checked>
+          <label for="c2"><strong>Step 2: Create Chat Agent</strong> — Use the single prompt below in Gemini Enterprise Agent Space to create the conversational agent.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c3" checked>
+          <label for="c3"><strong>Step 3: Initiate Workflow Agent</strong> — Use the single prompt below to scaffold the workflow, then configure the 3 branches.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c4" checked>
+          <label for="c4"><strong>Step 4: Synthetic Data Ready</strong> — Keep the mock contract tabs below open for instant 1-click copying during the demo.</label>
+        </li>
+      </ul>
+
+      <!-- Setup Part A: Chat Agent -->
+      <h3 style="color: var(--anz-navy); font-size: 18px; margin-top: 24px;">A. Single Prompt to Create the Chat Agent</h3>
+      <p style="font-size: 14px; color: var(--anz-muted); margin-bottom: 8px;">
+        Paste this prompt into Gemini Enterprise to instantly instantiate the conversational contract evaluator.
+      </p>
+
+      <div class="prompt-box">
+        <div class="prompt-header">
+          <span>Prompt: Chat Agent System Instruction</span>
+          <button class="btn btn-copy" onclick="copyText('chat-agent-prompt', this)">Copy Prompt</button>
+        </div>
+        <div class="prompt-content" id="chat-agent-prompt">You are the ANZ Institutional Banking Procurement & Legal Compliance Co-Pilot.
+
+Your objective is to evaluate vendor contracts (Master Services Agreements, Market Data Licenses, EULAs) submitted in chat against the mandatory ANZ Market Data Contracting Guidelines (ANZ-POL-IB-PROC-2026-V3.2) and APRA Prudential Standards (CPS 234 Information Security & CPS 230 Operational Resilience).
+
+Evaluation Matrix (The 5 Pillars):
+1. Data Sovereignty: Primary data hosting must be in Australia (Sydney/Melbourne). Reject if exclusively offshore. Review if DR failover is offshore (e.g., Singapore).
+2. Security & Audit: Must have SOC 2 / ISO 27001, 24-hr incident notice, and unrestricted APRA/ANZ audit rights. Reject if no audit rights.
+3. SLA & Credits: Minimum 99.99% monthly availability with fee credits. Reject if <99.5% or disclaims credits. Review if 99.90%-99.98%.
+4. Liability: Cap must be >= 2.0x Annual Contract Value with uncapped IP/data breach liability. Reject if <1.0x ACV. Review if 1.0x ACV with super-caps.
+5. Governing Law: Must be NSW or Victoria, Australia. Reject if foreign jurisdiction (e.g. Delaware). Review if England & Wales / NZ.
+
+When a user attaches or pastes a contract:
+1. Provide a clear Executive Verdict badge: [APPROVED], [DENIED], or [HUMAN REVIEW REQUIRED].
+2. Output a structured 5-Pillar Scorecard table showing Pass / Fail / Variance and the specific clause cited.
+3. List immediate recommended next actions for the sourcing manager.</div>
+      </div>
+
+      <!-- Setup Part B: Workflow Agent -->
+      <h3 style="color: var(--anz-navy); font-size: 18px; margin-top: 24px;">B. Single Prompt to Initiate Workflow Agent</h3>
+      <p style="font-size: 14px; color: var(--anz-muted); margin-bottom: 8px;">
+        Use this prompt in Gemini Enterprise Workflow Designer to scaffold the automated pipeline:
+      </p>
+
+      <div class="prompt-box">
+        <div class="prompt-header">
+          <span>Prompt: Workflow Agent Initialization</span>
+          <button class="btn btn-copy" onclick="copyText('workflow-agent-prompt', this)">Copy Prompt</button>
+        </div>
+        <div class="prompt-content" id="workflow-agent-prompt">Create an automated contract compliance evaluation and routing workflow for ANZ Institutional Banking.
+
+Trigger: Monitor Google Drive folder "01_Incoming_Contracts" for newly uploaded contract files (PDF, DOCX, TXT).
+
+Processing Steps:
+1. Extract contract text and metadata (Vendor Name, ACV, Effective Date).
+2. Evaluate contract against ANZ Policy ANZ-POL-IB-PROC-2026-V3.2 across the 5 regulatory pillars (Data Sovereignty, APRA CPS 234 Audit, 99.99% SLA, 2x ACV Liability Cap, NSW Governing Law).
+3. Branch on classification result:
+   - Branch 1 (APPROVED): Generate "Contract Approval Memorandum", save to Google Drive folder "02_Approved_Contracts", and notify delegate.
+   - Branch 2 (DENIED): Generate "Contract Rejection Notice" highlighting statutory breaches, save to "03_Rejected_Contracts", and alert sourcing team.
+   - Branch 3 (REVIEW REQUIRED): Generate "Risk Escalation Brief", save to "04_Pending_Human_Review", and trigger a Human-in-the-Loop review task.</div>
+      </div>
+
+      <!-- Manual Workflow Configuration Steps -->
+      <h4 style="color: var(--anz-navy); font-size: 15px; margin-top: 16px;">Manual Flow Wiring in Gemini Enterprise UI:</h4>
+      <div style="background: #FAFAFA; border: 1px solid var(--anz-border); border-radius: 8px; padding: 16px; font-size: 14px; margin-top: 8px;">
+        <p><strong>1. Trigger Node:</strong> Select Google Drive Connector ➔ Event: <em>On New File Created</em> ➔ Folder: <code>/ANZ_Demo/01_Incoming_Contracts</code>.</p>
+        <p style="margin-top: 8px;"><strong>2. Agent Evaluation Node:</strong> Model: <em>Gemini 1.5 Pro / Flash</em> ➔ Knowledge Grounding: Select <code>ANZ_IB_MarketData_Contract_Guidelines.md</code>.</p>
+        <p style="margin-top: 8px;"><strong>3. Conditional Switch Node:</strong>
+          <br>• Condition A: <code>verdict == 'APPROVED'</code> ➔ Action: Create Doc in <code>02_Approved_Contracts</code>.
+          <br>• Condition B: <code>verdict == 'DENIED'</code> ➔ Action: Create Doc in <code>03_Rejected_Contracts</code>.
+          <br>• Condition C: <code>verdict == 'REVIEW_REQUIRED'</code> ➔ Action: Create Doc in <code>04_Pending_Human_Review</code> + Create Human Review Task.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 3: Demo Act 1 - Chat Agent -->
+    <section id="chat-demo" class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-title-badge">Section 3</span>
+          Live Demo Act 1: The Chat-Based Co-Pilot
+        </h2>
+      </div>
+
+      <div class="script-timeline">
+        <!-- Step 1 -->
+        <div class="script-step">
+          <div class="step-marker">1</div>
+          <div class="step-header">
+            <span class="step-title">Introduction & Context Setting</span>
+            <span class="step-time">0:00 - 1:30</span>
+          </div>
+          <div class="track-grid">
+            <div class="track-box talk-track">
+              <div class="track-label">🎙️ Presenter Talk Track</div>
+              "Good morning. Today in ANZ Institutional Banking, reviewing technology agreements requires navigating rigorous APRA CPS 234 and 230 standards. Our sourcing managers often spend hours cross-referencing liability caps, data residency clauses, and SLA terms. Let's look at how Gemini Enterprise acts as an intelligent co-pilot directly in the procurement flow."
+            </div>
+            <div class="track-box action-track">
+              <div class="track-label">🖱️ Presenter Action</div>
+              Open Gemini Enterprise Chat. Point out that the agent is grounded with the official <em>ANZ Institutional Banking Contracting Guidelines</em> policy document.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="script-step">
+          <div class="step-marker">2</div>
+          <div class="step-header">
+            <span class="step-title">Upload Contract 1 (ApexQuant — Approved)</span>
+            <span class="step-time">1:30 - 3:00</span>
+          </div>
+          <div class="track-grid">
+            <div class="track-box talk-track">
+              <div class="track-label">🎙️ Presenter Talk Track</div>
+              "I'll start by asking our agent to review a market data contract from ApexQuant. I'll drop the agreement directly into the chat and prompt: <em>'Evaluate this vendor agreement against our institutional procurement policy.'</em>"
+            </div>
+            <div class="track-box action-track">
+              <div class="track-label">🖱️ Presenter Action</div>
+              Upload <code>Contract_01_ApexQuant_Approved.md</code> (or paste text). Send prompt. Show the real-time response generating the <strong>[APPROVED]</strong> verdict and 5-pillar table.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="script-step">
+          <div class="step-marker">3</div>
+          <div class="step-header">
+            <span class="step-title">Interactive Clause Deep-Dive</span>
+            <span class="step-time">3:00 - 4:30</span>
+          </div>
+          <div class="track-grid">
+            <div class="track-box talk-track">
+              <div class="track-label">🎙️ Presenter Talk Track</div>
+              "Because this is a conversational agent, I can immediately interrogate the reasoning: <em>'What specific language did the vendor use regarding APRA audit rights and data hosting?'</em> Gemini cites Section 2.1 showing AWS Sydney hosting and Section 3.3 for APRA audit rights."
+            </div>
+            <div class="track-box action-track">
+              <div class="track-label">🖱️ Presenter Action</div>
+              Type follow-up query: <em>"Does this meet APRA CPS 234 incident reporting window?"</em> Highlight the agent's instant confirmation of the 24-hour notification clause.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Demo Act 2 - Workflow Agent -->
+    <section id="workflow-demo" class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-title-badge">Section 4</span>
+          Live Demo Act 2: Autonomous Workflow Orchestrator
+        </h2>
+      </div>
+
+      <div class="script-timeline">
+        <!-- Step 4 -->
+        <div class="script-step">
+          <div class="step-marker">4</div>
+          <div class="step-header">
+            <span class="step-title">Transition to Automated Pipeline (Google Drive Integration)</span>
+            <span class="step-time">4:30 - 6:00</span>
+          </div>
+          <div class="track-grid">
+            <div class="track-box talk-track">
+              <div class="track-label">🎙️ Presenter Talk Track</div>
+              "Chat is fantastic for ad-hoc reviews. But what if ANZ processes dozens of contracts per week? We don't want humans manually copy-pasting documents. Let's switch to our <strong>Gemini Enterprise Workflow Agent</strong>. Here, our procurement team simply drops incoming contracts into a shared Google Drive folder."
+            </div>
+            <div class="track-box action-track">
+              <div class="track-label">🖱️ Presenter Action</div>
+              Open Google Drive showing the 4 folders. Open the Workflow Agent execution view in Gemini Enterprise in a split-screen or secondary tab.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="script-step">
+          <div class="step-marker">5</div>
+          <div class="step-header">
+            <span class="step-title">Execute Flow 2: Hard Rejection (GlobalMarketFlows)</span>
+            <span class="step-time">6:00 - 8:30</span>
+          </div>
+          <div class="track-grid">
+            <div class="track-box talk-track">
+              <div class="track-label">🎙️ Presenter Talk Track</div>
+              "I'm now uploading a contract from GlobalMarketFlows into <code>01_Incoming_Contracts</code>. Watch what happens: the workflow triggers automatically, reads the terms, identifies offshore hosting in Virginia, lack of APRA audit rights, and a 99.0% SLA. It autonomously routes the file and creates a formal Rejection Notice in <code>03_Rejected_Contracts</code>."
+            </div>
+            <div class="track-box action-track">
+              <div class="track-label">🖱️ Presenter Action</div>
+              Upload <code>Contract_02_GlobalMarketFlows_Denied.md</code> to Drive. Refresh <code>03_Rejected_Contracts</code>. Open the generated <em>Contract Rejection Notice</em> to show the redline reasons.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="script-step">
+          <div class="step-marker">6</div>
+          <div class="step-header">
+            <span class="step-title">Execute Flow 3: Human-in-the-Loop Review (FinPulse)</span>
+            <span class="step-time">8:30 - 11:00</span>
+          </div>
+          <div class="track-grid">
+            <div class="track-box talk-track">
+              <div class="track-label">🎙️ Presenter Talk Track</div>
+              "Finally, what about gray areas? FinPulse has a great AI analytics tool, but uses secondary DR in Singapore and a 99.95% SLA. Instead of blindly rejecting or approving, Gemini triggers <strong>Branch 3: Human-in-the-Loop Review</strong>. It moves the file to <code>04_Pending_Human_Review</code>, creates an Escalation Brief with the exact risk trade-offs, and waits for a senior legal delegate's decision."
+            </div>
+            <div class="track-box action-track">
+              <div class="track-label">🖱️ Presenter Action</div>
+              Upload <code>Contract_03_FinPulse_ReviewRequired.md</code> to Drive. Show the file landing in <code>04_Pending_Human_Review</code>. Open the generated <em>Risk Escalation Brief</em>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Synthetic Data & Mock Files -->
+    <section id="synthetic-data" class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-title-badge">Section 5</span>
+          Synthetic Data & Mock Contracts Kit
+        </h2>
+      </div>
+
+      <p style="font-size: 14px; margin-bottom: 16px;">
+        Use the tabs below to copy prompts, guidelines, and mock contract text directly into your clipboard, or download them as ready-to-use files for Google Drive.
+      </p>
+
+      <div class="tab-container">
+        <div class="tab-header">
+          <button class="tab-btn active" onclick="openTab(event, 'tab-guidelines')">📋 ANZ Policy Guidelines</button>
+          <button class="tab-btn" onclick="openTab(event, 'tab-c1')"><span class="pill-badge pill-approved">Pass</span> Contract 1: ApexQuant</button>
+          <button class="tab-btn" onclick="openTab(event, 'tab-c2')"><span class="pill-badge pill-denied">Deny</span> Contract 2: GlobalMarketFlows</button>
+          <button class="tab-btn" onclick="openTab(event, 'tab-c3')"><span class="pill-badge pill-review">Review</span> Contract 3: FinPulse</button>
+        </div>
+
+        <!-- Tab 1: Guidelines -->
+        <div id="tab-guidelines" class="tab-pane active">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 13px; font-weight: 600; color: var(--anz-navy);">Document: ANZ-POL-IB-PROC-2026-V3.2 (APRA CPS 234 Benchmark)</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-outline" onclick="downloadDoc('doc-guidelines-content', 'ANZ_IB_MarketData_Contract_Guidelines.md')">⬇ Download .md</button>
+              <button class="btn btn-primary" onclick="copyText('doc-guidelines-content', this)">📋 Copy Policy</button>
+            </div>
+          </div>
+          <div class="doc-viewer" id="doc-guidelines-content"># ANZ Banking Group — Institutional Banking & Technology Procurement
+## Policy Document: Market Data & FinTech Vendor Contracting Guidelines
+**Document ID:** ANZ-POL-IB-PROC-2026-V3.2  
+**Effective Date:** 1 January 2026  
+**Applicability:** All contracts, Master Services Agreements (MSAs), Order Forms, and End User License Agreements (EULAs) for Institutional Market Data Feeds, Pricing Engines, Low-Latency Trading APIs, and FinTech Analytics Platforms.
+
+### 1. Executive Summary & Regulatory Authority
+ANZ Institutional Banking relies on third-party market data, real-time pricing feeds, and quantitative analytics to service institutional clients, manage trading books, and execute foreign exchange/capital market transactions. 
+
+All procurement contracts must comply with Australian Prudential Regulation Authority (APRA) standards, specifically APRA CPS 234 (Information Security), APRA CPS 230 (Operational Resilience), the Australian Privacy Act 1988 (Cth), and internal ANZ Risk Management Frameworks.
+
+### 2. Mandatory Evaluation Criteria (Rule Matrix)
+When evaluating vendor contracts against this policy, the evaluating agent must assess the contract against the Five Core Pillars below:
+
+1. Data Sovereignty & Hosting:
+   - Pass: Data centers located in Sydney / Melbourne (AWS/GCP/Azure AU Regions or vendor-owned AU facilities).
+   - Hard Rejection: Data stored/processed exclusively outside Australia (e.g., US, EU, Asia-Pac) without encryption isolation.
+   - Review Required: Secondary disaster recovery (DR) or cross-border failover in APRA-recognized jurisdictions (e.g., Singapore, UK).
+
+2. Information Security (APRA CPS 234):
+   - Pass: Explicit clause guaranteeing SOC 2 / ISO 27001 + 24-hour incident notification + right for ANZ/APRA to audit.
+   - Hard Rejection: No audit rights, no security certifications, or incident notification window > 72 hours.
+   - Review Required: Standard certifications present, but audit rights require mutual agreement or 30 days advance notice.
+
+3. Service Availability (SLA) & Credits:
+   - Pass: Monthly uptime SLA >= 99.99% with graduated service fee rebates (credits) on outages.
+   - Hard Rejection: Uptime < 99.5% or contract specifically disclaims all financial credits / remedies for downtime.
+   - Review Required: Uptime between 99.90% and 99.98%, or downtime remedies limited to contract termination without rebates.
+
+4. Liability & Indemnification:
+   - Pass: Vendor liability cap >= 2x ACV, with standard unlimited carve-outs for IP indemnity, gross negligence, and breach of confidentiality.
+   - Hard Rejection: Liability capped below 1.0x ACV, or vendor completely excludes liability for data breaches or IP infringement.
+   - Review Required: Liability cap is exactly 1.0x ACV, or includes mutual super-caps (e.g. 3x ACV) for data protection breaches.
+
+5. Governing Law & Dispute Jurisdiction:
+   - Pass: Governing law: New South Wales (NSW) or Victoria (VIC), Australia, with Australian court jurisdiction.
+   - Hard Rejection: Foreign jurisdiction (e.g., Delaware/US, Cayman Islands) with mandatory offshore arbitration.
+   - Review Required: England & Wales or New Zealand (requires Legal Counsel approval).</div>
+        </div>
+
+        <!-- Tab 2: Contract 1 -->
+        <div id="tab-c1" class="tab-pane">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+              <span class="pill-badge pill-approved">State A: Approved</span>
+              <span style="font-size: 13px; font-weight: 600; color: var(--anz-navy);">Vendor: ApexQuant Data Systems Pty Ltd (Sydney, AU)</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-outline" onclick="downloadDoc('doc-c1-content', 'Contract_01_ApexQuant_Approved.md')">⬇ Download .md</button>
+              <button class="btn btn-primary" onclick="copyText('doc-c1-content', this)">📋 Copy Contract 1</button>
+            </div>
+          </div>
+          <div class="doc-viewer" id="doc-c1-content"># MASTER SERVICES & MARKET DATA LICENSE AGREEMENT
+**Agreement Reference:** APEX-ANZ-2026-0819  
+**Effective Date:** 15 September 2026  
+**Between:**
+1. **APEXQUANT DATA SYSTEMS PTY LTD** (ACN 612 849 201), Level 28, 100 Barangaroo Avenue, Sydney NSW 2000 ("Vendor" or "ApexQuant"); and
+2. **AUSTRALIA AND NEW ZEALAND BANKING GROUP LIMITED** (ABN 11 005 357 522), 833 Collins Street, Docklands VIC 3008 ("Customer" or "ANZ").
+
+### OPERATIVE PROVISIONS
+1. SERVICES & PRICING: Annual Contract Value (ACV): AUD $420,000 per annum.
+2. DATA HOSTING & SOVEREIGNTY:
+   - 2.1 Primary Infrastructure: All production servers, database nodes, client telemetry, and market data caches hosted exclusively in AWS Sydney (ap-southeast-2) and AWS Melbourne (ap-southeast-4).
+   - 2.2 Data Residency: No ANZ data or queries routed or stored outside Australia.
+3. INFORMATION SECURITY & REGULATORY COMPLIANCE (APRA CPS 234 / CPS 230):
+   - 3.1 Certifications: Maintains active ISO/IEC 27001:2022 and SOC 2 Type II certifications.
+   - 3.2 Incident Notification: Notifies ANZ CSIRT in writing within twenty-four (24) hours of any suspected incident.
+   - 3.3 Regulatory & Customer Audit Rights: Permits ANZ internal auditors and APRA regulators full inspection rights.
+4. SERVICE AVAILABILITY (SLA) & CREDITS:
+   - 4.1 Monthly Uptime: Guarantees monthly availability >= 99.99% (24/7/365).
+   - 4.2 Fee Credits: Graduated rebates up to 50% monthly credit for SLA breach.
+5. LIMITATION OF LIABILITY & INDEMNITIES:
+   - 5.1 Aggregate Cap: Capped at two times (2.0x) Annual Contract Value (AUD $840,000).
+   - 5.2 Carve-outs: Unlimited liability for IP indemnity, confidentiality, and data privacy breaches under Privacy Act 1988 (Cth).
+6. GOVERNING LAW & DISPUTE RESOLUTION:
+   - 6.1 Governing Law: Laws of New South Wales (NSW), Australia.</div>
+        </div>
+
+        <!-- Tab 3: Contract 2 -->
+        <div id="tab-c2" class="tab-pane">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+              <span class="pill-badge pill-denied">State B: Denied</span>
+              <span style="font-size: 13px; font-weight: 600; color: var(--anz-navy);">Vendor: GlobalMarketFlows Inc. (Wilmington DE, USA)</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-outline" onclick="downloadDoc('doc-c2-content', 'Contract_02_GlobalMarketFlows_Denied.md')">⬇ Download .md</button>
+              <button class="btn btn-primary" onclick="copyText('doc-c2-content', this)">📋 Copy Contract 2</button>
+            </div>
+          </div>
+          <div class="doc-viewer" id="doc-c2-content"># CLOUD MARKET ROUTING & LIQUIDITY ACCESS AGREEMENT
+**Agreement Reference:** GMF-ANZ-GLOBAL-9921  
+**Effective Date:** 01 October 2026  
+**Between:**
+1. **GLOBALMARKETFLOWS INC.**, 1209 North Orange Street, Wilmington, DE 19801, USA ("Vendor"); and
+2. **AUSTRALIA AND NEW ZEALAND BANKING GROUP LIMITED**, 833 Collins Street, Docklands VIC 3008 ("Customer").
+
+### OPERATIVE PROVISIONS
+1. FEES: USD $350,000 (approx. AUD $540,000) payable annually in advance.
+2. DATA LOCATION & HOSTING:
+   - 2.1 Global Infrastructure: All order logs, pricing telemetry, and counterparty data hosted exclusively in Northern Virginia (USA) and Frankfurt (Germany).
+   - 2.2 No Local Hosting: Vendor does not maintain local servers or storage in Australia.
+3. SECURITY, AUDIT & REGULATORY COMPLIANCE:
+   - 3.1 Security Standard: Annual internal self-assessments only.
+   - 3.2 Incident Notification: Vendor shall notify Customer within seven (7) business days.
+   - 3.3 No Audit Rights: Vendor strictly prohibits physical or logical audits, including audits by APRA or ASIC regulators.
+4. AVAILABILITY (SLA) & DISCLAIMERS:
+   - 4.1 Target Availability: 99.0% availability target.
+   - 4.2 Disclaimer: Platform provided "AS-IS" and "AS-AVAILABLE" with zero fee credits or outage remedies.
+5. LIMITATION OF LIABILITY:
+   - 5.1 Cap: Capped at total fees paid in preceding three (3) months (~USD $87,500 / AUD $135,000). Total exclusion of data breach losses.
+6. GOVERNING LAW & ARBITRATION:
+   - 6.1 Governing Law: State of Delaware, United States of America.
+   - 6.2 Binding AAA Arbitration in Wilmington, Delaware, USA.</div>
+        </div>
+
+        <!-- Tab 4: Contract 3 -->
+        <div id="tab-c3" class="tab-pane">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+              <span class="pill-badge pill-review">State C: Review Needed</span>
+              <span style="font-size: 13px; font-weight: 600; color: var(--anz-navy);">Vendor: FinPulse Real-Time Analytics Ltd (London UK / Sydney AU)</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-outline" onclick="downloadDoc('doc-c3-content', 'Contract_03_FinPulse_ReviewRequired.md')">⬇ Download .md</button>
+              <button class="btn btn-primary" onclick="copyText('doc-c3-content', this)">📋 Copy Contract 3</button>
+            </div>
+          </div>
+          <div class="doc-viewer" id="doc-c3-content"># QUANTITATIVE AI SENTIMENT & MARKET INTELLIGENCE LICENSE
+**Agreement Reference:** FINPULSE-ANZ-2026-Q4  
+**Effective Date:** 01 November 2026  
+**Between:**
+1. **FINPULSE REAL-TIME ANALYTICS LTD**, London, UK & Level 14, 333 George Street, Sydney NSW 2000 ("Vendor"); and
+2. **AUSTRALIA AND NEW ZEALAND BANKING GROUP LIMITED**, 833 Collins Street, Docklands VIC 3008 ("Customer").
+
+### OPERATIVE PROVISIONS
+1. CHARGES: AUD $310,000 per annum.
+2. HOSTING & DISASTER RECOVERY:
+   - 2.1 Primary Hosting: Sydney, Australia (Equinix SY4).
+   - 2.2 Disaster Recovery: Secondary warm failover hosted in Singapore (AWS ap-southeast-1) for disaster recovery failover.
+3. INFORMATION SECURITY & AUDIT:
+   - 3.1 Security: Certified SOC 2 Type II and ISO 27001:2022.
+   - 3.2 Incident Notification: 24 hours notification window.
+   - 3.3 Conditional Audit: Audits permitted with 30 business days prior written notice.
+4. SERVICE AVAILABILITY (SLA) & PERFORMANCE:
+   - 4.1 Availability Guarantee: Monthly uptime SLA of 99.95% with graduated fee credits up to 30%.
+5. LIMITATION OF LIABILITY:
+   - 5.1 Standard Cap: 1.0x Annual Contract Value (AUD $310,000).
+   - 5.2 Super-Cap: 3.0x Annual Contract Value (AUD $930,000) for data protection / privacy breaches. Uncapped IP indemnity.
+6. GOVERNING LAW:
+   - 6.1 Laws of England & Wales with NSW law applicable to privacy obligations.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Output Artifacts -->
+    <section id="output-artifacts" class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-title-badge">Section 6</span>
+          Generated Output Artifacts Reference
+        </h2>
+      </div>
+
+      <p style="font-size: 14px; margin-bottom: 16px;">
+        These are the exact formal governance documents automatically generated by the Workflow Agent into Google Drive for each scenario:
+      </p>
+
+      <div class="tab-container">
+        <div class="tab-header">
+          <button class="tab-btn active" onclick="openTab(event, 'tab-art-app')">📄 Approval Memo (Branch 1)</button>
+          <button class="tab-btn" onclick="openTab(event, 'tab-art-den')">📄 Rejection Notice (Branch 2)</button>
+          <button class="tab-btn" onclick="openTab(event, 'tab-art-esc')">📄 Escalation Review Brief (Branch 3)</button>
+        </div>
+
+        <div id="tab-art-app" class="tab-pane active">
+          <div class="doc-viewer"># ANZ INSTITUTIONAL BANKING — CONTRACT APPROVAL MEMORANDUM
+Status: APPROVED (Automated Compliance Clearance)
+Generated By: Gemini Enterprise Workflow Agent
+
+EXECUTIVE SUMMARY & VERDICT
+- Vendor: ApexQuant Data Systems Pty Ltd (ACN 612 849 201)
+- ACV: AUD $420,000 / annum
+- Verdict: APPROVED FOR EXECUTION
+- Rationale: Fully compliant with ANZ-POL-IB-PROC-2026-V3.2 & APRA CPS 234/230.
+
+FIVE-PILLAR AUDIT FINDINGS:
+1. Data Sovereignty: [PASSED] Sydney & Melbourne AWS regions (Sec 2.1).
+2. Security & Audit: [PASSED] SOC 2 Type II, 24-hr notice, APRA audit rights (Sec 3.1-3.3).
+3. Service SLA: [PASSED] 99.99% monthly uptime with graduated fee credits (Sec 4.1).
+4. Liability: [PASSED] 2.0x ACV cap with uncapped IP/data breach liability (Sec 5.1).
+5. Jurisdiction: [PASSED] New South Wales, Australia (Sec 6.1).
+
+AUTOMATED ACTIONS:
+- Routed to 02_Approved_Contracts/
+- Generated DocuSign envelope for Group Executive Delegate.</div>
+        </div>
+
+        <div id="tab-art-den" class="tab-pane">
+          <div class="doc-viewer"># ANZ INSTITUTIONAL BANKING — CONTRACT REJECTION NOTICE
+Status: REJECTED (Hard Compliance Violation)
+Generated By: Gemini Enterprise Workflow Agent
+
+EXECUTIVE SUMMARY & VERDICT
+- Vendor: GlobalMarketFlows Inc. (Delaware, USA)
+- ACV: USD $350,000 (approx. AUD $540,000)
+- Verdict: REJECTED — CANNOT EXECUTE AS DRAFTED
+- Rationale: Multiple non-negotiable breaches of APRA CPS 234 & ANZ Risk Policy.
+
+CRITICAL DEFICIENCIES:
+1. Data Sovereignty: [FAILED] Hosted exclusively in USA & Germany (Sec 2.1).
+2. Audit Rights: [FAILED] Prohibits APRA/ANZ audit; 7-day breach notice (Sec 3.2-3.3).
+3. Service SLA: [FAILED] 99.0% uptime with "as-is" disclaimer and zero credits (Sec 4.1).
+4. Liability: [FAILED] 3-month fee cap (0.25x ACV) with total breach disclaimer (Sec 5.1).
+5. Jurisdiction: [FAILED] Delaware USA governing law with AAA arbitration (Sec 6.1).
+
+AUTOMATED ACTIONS:
+- Quarantined in 03_Rejected_Contracts/
+- Generated vendor redline remediation pack sent to Sourcing Manager.</div>
+        </div>
+
+        <div id="tab-art-esc" class="tab-pane">
+          <div class="doc-viewer"># ANZ INSTITUTIONAL BANKING — CONTRACT RISK ESCALATION & REVIEW BRIEF
+Status: PENDING HUMAN-IN-THE-LOOP REVIEW
+Generated By: Gemini Enterprise Workflow Agent
+
+EXECUTIVE SUMMARY & VERDICT
+- Vendor: FinPulse Real-Time Analytics Ltd (UK / AU)
+- ACV: AUD $310,000 / annum
+- Verdict: FLAGGED FOR HUMAN OVERSIGHT & RISK APPROVAL
+- Rationale: No hard blockers, but 4 policy variances require committee sign-off.
+
+VARIANCE MATRIX:
+1. Data Sovereignty: [VARIANCE] Primary Sydney (OK), Disaster Recovery in Singapore (Sec 2.2).
+2. Audit Rights: [VARIANCE] 30 business days advance notice required (Sec 3.3).
+3. Service SLA: [VARIANCE] 99.95% availability (Benchmark is 99.99%) (Sec 4.1).
+4. Liability: [VARIANCE] 1.0x ACV base cap, but 3.0x ACV data breach super-cap (Sec 5.1).
+
+AUTOMATED ACTIONS:
+- Staged in 04_Pending_Human_Review/
+- Assigned task to ANZ-Legal-FinTech-Queue awaiting [APPROVE WITH EXCEPTION] or [REDLINE].</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: FAQs & Speaker Tips -->
+    <section id="faqs" class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-title-badge">Section 7</span>
+          Speaker FAQs & Objection Handling
+        </h2>
+      </div>
+
+      <div style="display: grid; gap: 16px;">
+        <div style="background: #F8FAFC; border: 1px solid var(--anz-border); border-radius: 8px; padding: 16px;">
+          <h4 style="color: var(--anz-navy); font-size: 15px; margin-bottom: 6px;">Q: How does Gemini Enterprise avoid hallucinating compliance rules?</h4>
+          <p style="font-size: 14px; color: var(--anz-text);">
+            <strong>A:</strong> Gemini Enterprise uses <em>strict grounding</em> against ANZ's vectorized policy documents. It is instructed to extract exact clause references as citations. If a required term is absent from the contract, it treats it as a non-compliant deficiency rather than assuming or hallucinating terms.
+          </p>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid var(--anz-border); border-radius: 8px; padding: 16px;">
+          <h4 style="color: var(--anz-navy); font-size: 15px; margin-bottom: 6px;">Q: How does this satisfy APRA CPS 234 and CPS 230 audit trails?</h4>
+          <p style="font-size: 14px; color: var(--anz-text);">
+            <strong>A:</strong> Every evaluation executed by both the Chat Agent and Workflow Agent logs timestamped audit records, extracted parameters, model versioning, and the exact policy version evaluated against directly into Google Cloud Logging / BigQuery for regulatory inspection.
+          </p>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid var(--anz-border); border-radius: 8px; padding: 16px;">
+          <h4 style="color: var(--anz-navy); font-size: 15px; margin-bottom: 6px;">Q: Why have both Chat and Workflow agents instead of just one?</h4>
+          <p style="font-size: 14px; color: var(--anz-text);">
+            <strong>A:</strong> They solve different stages of procurement. <em>Chat agents</em> empower sourcing lawyers during active counterparty negotiations to test "what-if" compromises in seconds. <em>Workflow agents</em> handle batch governance, system-to-system automation, and regulatory triaging at scale with zero manual overhead.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating Sticky Action Bar -->
+    <div class="floating-bar">
+      <div style="font-size: 14px; font-weight: 600;">
+        ANZ Gemini Enterprise Demo Portal
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-outline" style="color: #fff; border-color: rgba(255,255,255,0.4);" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆ Back to Top</button>
+        <button class="btn btn-primary" style="background: var(--anz-accent);" onclick="copyText('doc-guidelines-content', this)">📋 Copy Policy Doc</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Tab Switching Function
+    function openTab(evt, tabId) {
+      const parentContainer = evt.currentTarget.closest('.tab-container');
+      const tabPanes = parentContainer.querySelectorAll('.tab-pane');
+      const tabButtons = parentContainer.querySelectorAll('.tab-btn');
+
+      tabPanes.forEach(pane => pane.classList.remove('active'));
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+
+      parentContainer.querySelector('#' + tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    // Copy to Clipboard Function
+    function copyText(elementId, btnElement) {
+      const el = document.getElementById(elementId);
+      const textToCopy = el.innerText || el.textContent;
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalText = btnElement.innerText;
+        btnElement.innerText = "✓ Copied!";
+        btnElement.classList.add("copied");
+        setTimeout(() => {
+          btnElement.innerText = originalText;
+          btnElement.classList.remove("copied");
+        }, 2200);
+      }).catch(err => {
+        console.error("Failed to copy:", err);
+      });
+    }
+
+    // Client-side Blob Downloader
+    function downloadDoc(elementId, filename) {
+      const el = document.getElementById(elementId);
+      const text = el.innerText || el.textContent;
+      const blob = new Blob([text], { type: 'text/markdown;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Highlight Active Nav Link on Scroll
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      let currentSection = '';
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 120) {
+          currentSection = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + currentSection) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+ANZ Banking Group — Institutional Banking & Technology Procurement
+Policy Document: Market Data & FinTech Vendor Contracting Guidelines
+Document ID: ANZ-POL-IB-PROC-2026-V3.2
+Effective Date: 1 January 2026
+
+1. EXECUTIVE SUMMARY & REGULATORY AUTHORITY
+ANZ Institutional Banking relies on third-party market data, real-time pricing feeds, and quantitative analytics to service institutional clients, manage trading books, and execute foreign exchange/capital market transactions.
+
+All procurement contracts must comply with Australian Prudential Regulation Authority (APRA) standards, specifically APRA CPS 234 (Information Security), APRA CPS 230 (Operational Resilience), the Australian Privacy Act 1988 (Cth), and internal ANZ Risk Management Frameworks.
+
+2. MANDATORY EVALUATION CRITERIA (RULE MATRIX)
+When evaluating vendor contracts against this policy, the evaluating agent must assess the contract against the Five Core Pillars below.
+
+Pillar 1: Data Sovereignty & Hosting
+- Policy Requirement: Primary production data and transactional metadata must reside within Australia.
+- Pass Criteria: Data Centers located in Sydney / Melbourne (AWS/GCP/Azure AU Regions or vendor-owned AU facilities).
+- Hard Rejection Trigger: Data stored/processed exclusively outside Australia (e.g., US, EU, Asia-Pac) without encryption isolation.
+- Review Required Trigger: Secondary disaster recovery (DR) or cross-border failover in APRA-recognized jurisdictions (e.g., Singapore, UK) with customer notification.
+
+Pillar 2: Information Security (APRA CPS 234)
+- Policy Requirement: Vendor must maintain ISO 27001 / SOC 2 Type II certification, annual independent pen testing, and notify ANZ of security incidents within 24 hours.
+- Pass Criteria: Explicit clause guaranteeing SOC 2 / ISO 27001 + 24-hour incident notification + right for ANZ/APRA to audit.
+- Hard Rejection Trigger: No audit rights, no security certifications, or incident notification window > 72 hours.
+- Review Required Trigger: Standard certifications present, but audit rights require mutual agreement or 30 days advance notice.
+
+Pillar 3: Service Availability (SLA) & Credits
+- Policy Requirement: Critical market data feeds require 99.99% monthly availability with financial penalty credits for downtime.
+- Pass Criteria: Monthly uptime SLA >= 99.99% with graduated service fee rebates (credits) on outages.
+- Hard Rejection Trigger: Uptime < 99.5% or contract specifically disclaims all financial credits / remedies for downtime.
+- Review Required Trigger: Uptime between 99.90% and 99.98%, or downtime remedies limited to contract termination without rebates.
+
+Pillar 4: Liability & Indemnification
+- Policy Requirement: Standard aggregate liability cap must be at least 2.0x Annual Contract Value (ACV). Uncapped liability required for IP infringement, data breach, and confidentiality breaches.
+- Pass Criteria: Vendor liability cap >= 2x ACV, with standard unlimited carve-outs for IP indemnity, gross negligence, and breach of confidentiality.
+- Hard Rejection Trigger: Liability capped below 1.0x ACV, or vendor completely excludes liability for data breaches or IP infringement.
+- Review Required Trigger: Liability cap is exactly 1.0x ACV, or includes mutual super-caps (e.g. 3x ACV) for data protection breaches.
+
+Pillar 5: Governing Law & Dispute Jurisdiction
+- Policy Requirement: Contracts must be governed by the laws of an Australian State (preferable New South Wales or Victoria).
+- Pass Criteria: Governing law: New South Wales (NSW) or Victoria (VIC), Australia, with Australian court jurisdiction.
+- Hard Rejection Trigger: Governing law: Foreign jurisdiction (e.g., Delaware/US, Cayman Islands) with mandatory offshore arbitration.
+- Review Required Trigger: Governing law: England & Wales or New Zealand (requires Legal Counsel approval).
+
+3. CLASSIFICATION & RECOMMENDATION DECISION LOGIC
+State A: APPROVAL (Compliant)
+- Condition: Contract satisfies all five pillars without exception.
+- Action: Issue Contract Approval Memorandum, certify APRA CPS 234/230 alignment, and forward directly to Authorized Delegate for digital execution.
+
+State B: DENIAL (Non-Compliant)
+- Condition: Contract triggers one or more Hard Rejection triggers.
+- Action: Issue Formal Contract Rejection Notice itemizing non-compliant sections, citing regulatory risk, and providing remediation guidelines.
+
+State C: HUMAN-IN-THE-LOOP REVIEW (Conditional / Exception)
+- Condition: Contract has no Hard Rejections, but triggers one or more Review Required triggers.
+- Action: Issue Escalation & Risk Review Brief flagging the specific clause variances for review by the ANZ Legal & Procurement Oversight Committee prior to final sign-off.
